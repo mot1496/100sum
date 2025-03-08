@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>100マス計算</title>
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>100マス計算（足し算）</h1>
+      <div id="display">00:00:00.000</div>
+    </header>
+    <table></table>
+    <footer>
+      <button type="button">計算終了</button>
+    </footer>
+  </div>
+  <script src="Stopwatch.js"></script>
+  <script>
+    const display = document.getElementById('display');
+    let stopwatch = new Stopwatch();
+    let timerID   = setInterval(function(){
+      stopwatch.start()
+      display.textContent = stopwatch.getTime();
+    }, 10);
+    /* ************************************************************ */
+    /* テーブルの作成                                                */ 
+    /* ************************************************************ */
+    const table = document.querySelector('table');
+    let   tr    = document.createElement('tr');
+    /* 1行目のヘッダーを作成 */
+    for(let c = 0; c < 10; c++){
+      const th = document.createElement('th');
+      th.setAttribute('id', 0 + '-' + c);
+      if(c != 0) {
+        th.textContent = Math.floor(Math.random()*10);
+      }
+      tr.appendChild(th);
+    }
+    table.appendChild(tr);
+    /* 1行目以降のテーブルを作成 */
+    for(let r = 1; r < 10; r++){
+      for(let c = 0; c < 10; c++){
+        if(c == 0){
+          tr = document.createElement('tr');
+          const th = document.createElement('th');
+          th.setAttribute('id', r + '-' + c);
+          th.textContent = Math.floor(Math.random()*10);
+          tr.appendChild(th);
+        } else {
+          const td = document.createElement('td');
+          td.setAttribute('id', r + '-' + c);
+          td.setAttribute('contenteditable', true);
+          tr.appendChild(td);
+        }
+      }
+      table.appendChild(tr);
+    }
+    /* *************************************************************** */ 
+    /* 計算終了ボタンのクリック                                          */
+    /* 1~9行目の各マスの値が、1行目の値と2行目の値の和になっているかチェック */
+    /* *************************************************************** */ 
+    const button = document.querySelector('button');
+    button.addEventListener('click', () => {
+      clearInterval(timerID);
+      stopwatch.stop();
+      let error_count = 0; 
+      for(let r = 1; r < 10; r++){
+        for(let c = 1; c < 10; c++){
+          const td = document.getElementById(r + '-' + c);
+          const th1 = Number(document.getElementById(r + '-' + 0).textContent);
+          const th2 = Number(document.getElementById(0 + '-' + c).textContent);
+          if(td.textContent != (th1 + th2)){
+            td.style.backgroundColor = 'red';
+            error_count++;
+          } 
+        }
+      }
+      alert(error_count==0 ? 'OK!' : 'NG!');
+    });
+  </script>
+</body>
+</html>
