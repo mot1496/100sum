@@ -1,5 +1,6 @@
 #container {
-    width: 560px;
+    /* 70pxのマスが8個 + 1pxのボーダーが9本 */
+    width: 569px;
 
     margin-left : auto;
     margin-right: auto;
@@ -12,11 +13,14 @@ table {
     border-collapse : collapse;
 }
 td, th {
+    margin : 0px;
+    padding: 0px;
+
     width : 70px;
     height: 70px;
-    font-size: 30px;
-
     border : 1px solid black;
+
+    font-size: 30px;
     text-align: center;
 }
 th {
